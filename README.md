@@ -23,13 +23,19 @@ Principais tecnologias:
 
 Onde os requisitos foram aplicados:
 
-- React Router: `src/App.jsx` define as rotas usando `Routes` e `Route`.
-- Layout reutilizável: `src/layouts/MainLayout.jsx` contém `Header`, menu e `<Outlet />`.
-- Navegação declarativa: uso de `Link` e `NavLink` em `MainLayout.jsx` e `BookCard.jsx`.
-- Navegação programática: `useNavigate()` em `src/pages/Home.jsx` e `src/pages/LivroDetalhe.jsx`.
-- URLs dinâmicas e `useParams()`: `src/pages/LivroDetalhe.jsx` usa `useParams()` para ler `:id`.
-- Hook customizado: `src/hooks/useLocalStorage.js` preservado e disponível para uso.
-- Consumo de dados locais: `fetch('/data/books.json')` nas páginas `Catalogo` e `LivroDetalhe`.
+- **React Router**: Em `src/App.jsx`, as rotas são definidas utilizando os componentes `Routes` e `Route` do React Router DOM. Isso permite a navegação entre páginas sem recarregar a aplicação, criando uma Single Page Application (SPA). Por exemplo, a rota raiz (`/`) renderiza o `MainLayout`, enquanto `/catalogo` e `/catalogo/:id` renderizam as páginas `Catalogo` e `LivroDetalhe`, respectivamente.
+
+- **Layout reutilizável**: O arquivo `src/layouts/MainLayout.jsx` implementa um layout compartilhado que inclui o `Header`, um menu de navegação com links para "Início" e "Catálogo", e o componente `<Outlet />` do React Router, que renderiza o conteúdo das páginas filhas. Isso garante consistência visual e estrutural em todas as páginas da aplicação.
+
+- **Navegação declarativa**: A navegação declarativa é realizada através dos componentes `Link` e `NavLink` do React Router. Em `MainLayout.jsx`, `NavLink` é usado para os links do menu, aplicando uma classe "active" quando a rota está ativa. Em `BookCard.jsx`, `Link` é utilizado para navegar para os detalhes de um livro específico, como `<Link to={`/catalogo/${livro.id}`}>Ver detalhes</Link>`.
+
+- **Navegação programática**: O hook `useNavigate()` permite navegação programática baseada em eventos. Em `src/pages/Home.jsx`, um botão chama `navegar('/catalogo')` para redirecionar ao catálogo. Em `src/pages/LivroDetalhe.jsx`, o botão "Voltar" usa `navegar(-1)` para retornar à página anterior no histórico.
+
+- **URLs dinâmicas e `useParams()`**: URLs dinâmicas são usadas para páginas detalhadas. Em `src/pages/LivroDetalhe.jsx`, o hook `useParams()` extrai o parâmetro `:id` da URL (ex.: `/catalogo/1`), permitindo buscar e exibir os detalhes do livro correspondente do arquivo `books.json`.
+
+- **Hook customizado**: O arquivo `src/hooks/useLocalStorage.js` contém um hook personalizado para interagir com o localStorage do navegador. Esta sendo usado em `src/pages/Catalogo.jsx` para persistir a lista de livros após remoções, garantindo que as alterações sejam salvas entre sessões. Isso permite que remoções de livros sejam mantidas mesmo após recarregar a página.
+
+- **Consumo de dados locais**: Os dados dos livros são consumidos localmente via `fetch('/data/books.json')`. Em `src/pages/Catalogo.jsx`, isso carrega a lista completa de livros para exibição e filtragem. Em `src/pages/LivroDetalhe.jsx`, busca o livro específico pelo ID, com tratamento de estados de carregamento e erro usando componentes como `Loading` e `ErrorMessage`.
 
 Arquivos relevantes:
 

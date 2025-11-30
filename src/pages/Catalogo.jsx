@@ -1,4 +1,5 @@
 import { useEffect, useState } from "react";
+import useLocalStorage from "../hooks/useLocalStorage";
 import SearchBar from "../components/SearchBar";
 import Counters from "../components/Counters";
 import BookCard from "../components/BookCard";
@@ -6,7 +7,7 @@ import Loading from "../components/Loading";
 import ErrorMessage from "../components/ErrorMessage";
 
 function Catalogo() {
-  const [livros, setLivros] = useState([]);
+  const [livros, setLivros] = useLocalStorage("livros", []);
   const [busca, setBusca] = useState("");
   const [carregando, setCarregando] = useState(true);
   const [erro, setErro] = useState("");
