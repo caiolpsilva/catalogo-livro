@@ -5,6 +5,7 @@ import Counters from "../components/Counters";
 import BookCard from "../components/BookCard";
 import Loading from "../components/Loading";
 import ErrorMessage from "../components/ErrorMessage";
+import livrosData from "../../public/data/books.json";
 
 function Catalogo() {
   const [livros, setLivros] = useLocalStorage("livros", []);
@@ -13,17 +14,22 @@ function Catalogo() {
   const [erro, setErro] = useState("");
 
   useEffect(() => {
-    setCarregando(true);
-    fetch("/data/books.json")
-      .then((res) => res.json())
-      .then((data) => {
-        setLivros(data);
+    const carregarLivros = async () => {
+      try {
+        setCarregando(true);
+        await new Promise(resolve => setTimeout(resolve, 500));
+        
+        if (livros.length === 0) {
+          setLivros(livrosData);
+        }
+      } catch (err) {
+        setErro("Erro ao carregar os livros. Tente novamente mais tarde.");
+      } finally {
         setCarregando(false);
-      })
-      .catch(() => {
-        setErro("Erro ao carregar livros.");
-        setCarregando(false);
-      });
+      }
+    };
+
+    carregarLivros();
   }, []);
 
   const livrosFiltrados = livros.filter(
@@ -42,8 +48,12 @@ function Catalogo() {
       <h2>Catálogo</h2>
       <SearchBar search={busca} setSearch={setBusca} />
       <Counters total={livros.length} filtered={livrosFiltrados.length} />
-      {livrosFiltrados.length === 0 ? (
-        <p className="empty">Nenhum livro encontrado.</p>
+      
+      {livrosFiltrados.length === 0 && !carregando ? (
+        <div className="no-results">
+          <p className="empty">Nenhum livro encontrado.</p>
+          {busca && <p>Tente outra busca ou limpe o campo de pesquisa.</p>}
+        </div>
       ) : (
         <ul className="book-list">
           {livrosFiltrados.map((livro) => (

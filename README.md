@@ -35,19 +35,12 @@ Onde os requisitos foram aplicados:
 
 - **Hook customizado**: O arquivo `src/hooks/useLocalStorage.js` contém um hook personalizado para interagir com o localStorage do navegador. Esta sendo usado em `src/pages/Catalogo.jsx` para persistir a lista de livros após remoções, garantindo que as alterações sejam salvas entre sessões. Isso permite que remoções de livros sejam mantidas mesmo após recarregar a página.
 
-- **Consumo de dados locais**: Os dados dos livros são consumidos localmente via `fetch('/data/books.json')`. Em `src/pages/Catalogo.jsx`, isso carrega a lista completa de livros para exibição e filtragem. Em `src/pages/LivroDetalhe.jsx`, busca o livro específico pelo ID, com tratamento de estados de carregamento e erro usando componentes como `Loading` e `ErrorMessage`.
+- **Persistência com `useLocalStorage`**: Em `src/pages/Catalogo.tsx`, é utilizado um hook customizado `useLocalStorage` para gerenciar a lista de livros com armazenamento local. Este hook:
+  - Carrega os dados iniciais de `books.json` na primeira execução
+  - Sincroniza automaticamente com o `localStorage` do navegador
+  - Mantém todas as modificações (como remoções de livros) persistentes entre sessões
+  - Permite filtragem local em tempo-real durante buscas
 
-Arquivos relevantes:
+- **Tratamento de estados**: Tanto `Catalogo.tsx` quanto `LivroDetalhe.tsx` implementam estados completos para carregamento, erro e resultados vazios, utilizando componentes como `Loading` e `ErrorMessage` para melhor experiência do usuário.
 
-- `src/layouts/MainLayout.jsx` - layout com menu e `Outlet`.
-- `src/pages/Home.jsx` - página inicial com botão que navega para `/catalogo`.
-- `src/pages/Catalogo.jsx` - lista de livros, busca com foco automático, filtros e contadores.
-- `src/pages/LivroDetalhe.jsx` - detalhes do livro via rota dinâmica.
-- `src/components/BookCard.jsx` - cartão do livro com link para detalhes.
-- `src/components/Loading.jsx` e `src/components/ErrorMessage.jsx` - UX de carregamento/erro.
-
-Observações:
-
-- Ajuste de nomes de variáveis em português foi aplicado nas novas páginas (`livros`, `busca`, `carregando`, `erro`).
-- O JSON com os livros está em `public/data/books.json`.
 
